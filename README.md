@@ -8,7 +8,7 @@ Utility to dump all CloudGenix network serial information to an .XLSX file
 * Python modules:
     * cloudgenix >= 5.0.1b1 - <https://github.com/CloudGenix/sdk-python>
     * cloudgenix_idname >= 1.2.0 - <https://github.com/ebob9/cloudgenix-idname>
-    * openpyxl >= 2.5.4 - <https://bitbucket.org/openpyxl/openpyxl>
+    * openpyxl == 2.5.4 - <https://bitbucket.org/openpyxl/openpyxl>
 
 #### License
 MIT
@@ -30,4 +30,5 @@ edwards-mbp-pro:Desktop aaron$
 #### Version
 Version | Changes
 ------- | --------
+**1.0.1**| Added strict openpyxl version (2.5.4)
 **1.0.0**| Initial Release.

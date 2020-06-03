@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='cloudgenix_serial_report',
-      version='1.0.0',
+      version='1.0.1',
       description='Utility to dump all CloudGenix network serial information to an .XLSX file.',
       long_description=long_description,
       long_description_content_type='text/markdown',
@@ -13,9 +13,9 @@ setup(name='cloudgenix_serial_report',
       author_email='cloudgenix_serial_report@ebob9.com',
       license='MIT',
       install_requires=[
-            'cloudgenix >= 5.0.1b1',
+            'cloudgenix >= 5.3.1b1',
             'cloudgenix_idname >= 1.2.0',
-            'openpyxl >= 2.5.4'
+            'openpyxl == 2.5.4'
       ],
       packages=['cloudgenix_serial_report'],
       entry_points={
