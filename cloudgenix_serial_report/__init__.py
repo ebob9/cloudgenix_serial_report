@@ -14,7 +14,7 @@ import argparse
 import cloudgenix
 import cloudgenix_idname
 from openpyxl import Workbook
-from openpyxl.styles import Font
+from openpyxl.styles import Font, NamedStyle
 from openpyxl.utils import get_column_letter
 
 
@@ -24,10 +24,10 @@ HEADER = [
     'Serial Number',
     'Model',
     'Currently Connected',
-    'Creation Date',
+    'Creation Date (UTC)',
     'Hardware State',
     'Claimed to Element',
-    'Claimed Date',
+    'Claimed Date (UTC)',
     'Element State',
     'Element Name',
     'Element Software Version',
@@ -36,6 +36,9 @@ HEADER = [
 
 SCRIPT_VERSION = cloudgenix.version
 SCRIPT_NAME = 'CloudGenix Serial Report'
+
+# set date style
+date_style = NamedStyle(name='datetime', number_format='MM/DD/YYYY HH:MM:MM')
 
 
 def generate(logged_in_sdk, specify_filename=None):
@@ -85,7 +88,7 @@ def generate(logged_in_sdk, specify_filename=None):
                 entry['version'] = el_software_version
                 if el_claimed_date and isinstance(el_claimed_date, int) and el_claimed_date > 0:
                     claimed_datetime = datetime.datetime.utcfromtimestamp(int(el_claimed_date) / 10000000.0)
-                    entry['claimed'] = claimed_datetime.strftime(DATE_FMT) + " UTC"
+                    entry['claimed'] = claimed_datetime
                 else:
                     entry['claimed'] = "<Unknown>"
 
@@ -119,7 +122,7 @@ def generate(logged_in_sdk, specify_filename=None):
                 # creation date
                 if m_created and isinstance(m_created, int) and m_created > 0:
                     created_datetime = datetime.datetime.utcfromtimestamp(int(m_created) / 10000000.0)
-                    report_entry.append(created_datetime.strftime(DATE_FMT) + " UTC")
+                    report_entry.append(created_datetime)
                 else:
                     report_entry.append("<Unknown>")
 
@@ -178,13 +181,22 @@ def generate(logged_in_sdk, specify_filename=None):
     for row in report:
         ws.append(row)
 
-    # autofit columns to data.
+    # autofit columns to data, set date style on date columns
     for col in ws.columns:
         max_length = 0
         column = col[0].column  # Get the column name
+        column_value = col[0].value
+
         for cell in col:
-            if len(str(cell.value)) > max_length:
-                max_length = len(cell.value)
+            if isinstance(cell.value, datetime.datetime):
+                cell_check_len = len(str(cell.value.strftime(DATE_FMT)))
+                # date time cells, set format
+                cell.style = date_style
+            else:
+                cell_check_len = len(str(cell.value))
+            if cell_check_len > max_length:
+                max_length = cell_check_len
+
         adjusted_width = (max_length + 2) * 1.1
         ws.column_dimensions[column].width = adjusted_width
 

@@ -30,5 +30,6 @@ edwards-mbp-pro:Desktop aaron$
 #### Version
 Version | Changes
 ------- | --------
+**1.0.2**| Removed "UTC" from data to allow date sorting to work correctly
 **1.0.1**| Added strict openpyxl version (2.5.4)
 **1.0.0**| Initial Release.

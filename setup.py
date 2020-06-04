@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='cloudgenix_serial_report',
-      version='1.0.1',
+      version='1.0.2',
       description='Utility to dump all CloudGenix network serial information to an .XLSX file.',
       long_description=long_description,
       long_description_content_type='text/markdown',
